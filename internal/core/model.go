@@ -7,22 +7,25 @@ import (
 )
 
 type Channel struct {
-	Id        uuid.UUID
-	Name      string
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	Id         uuid.UUID
+	ExternalId string
+	Name       string
+	CreatedAt  time.Time
+	UpdatedAt  time.Time
 }
 
 type Participant struct {
-	Id        uuid.UUID
-	Name      string
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	Id         uuid.UUID
+	ExternalId string
+	Name       string
+	CreatedAt  time.Time
+	UpdatedAt  time.Time
 }
 
 type Chat struct {
-	Id        uuid.UUID
-	ChannelId uuid.UUID
+	Id         uuid.UUID
+	ChannelId  uuid.UUID
+	ExternalId string
 
 	Channel      Channel
 	Participants []Participant
@@ -32,6 +35,7 @@ type Message struct {
 	Id            uuid.UUID
 	ChatId        uuid.UUID
 	ParticipantId uuid.UUID
+	ExternalId    string
 
 	Content     string
 	Attachments []MessageAttachment
@@ -49,8 +53,9 @@ type Message struct {
 }
 
 type MessageAttachment struct {
-	Id        uuid.UUID
-	MessageId uuid.UUID
+	Id         uuid.UUID
+	MessageId  uuid.UUID
+	ExternalId string
 
 	MimeType string
 	Url      string
