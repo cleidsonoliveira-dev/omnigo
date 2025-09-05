@@ -56,9 +56,36 @@ type MessageAttachment struct {
 	Url      string
 }
 
-type Presence struct {
-	Id uuid.UUID
+type ParticipantPresenceStatus string
 
+const (
+	ParticipantPresenceOnline  ParticipantPresenceStatus = "online"
+	ParticipantPresenceOffline ParticipantPresenceStatus = "offline"
+	ParticipantPresenceIdle    ParticipantPresenceStatus = "idle"
+)
+
+type ParticipantPresence struct {
+	Id            uuid.UUID
+	ParticipantId uuid.UUID
+
+	Status     ParticipantPresenceStatus
+	ReceivedAt time.Time
+	CreatedAt  time.Time
+}
+
+type ChatPresenceStatus string
+
+const (
+	ChatPresenceTyping    ChatPresenceStatus = "typing"
+	ChatPresenceRecording ChatPresenceStatus = "recording"
+)
+
+type ChatPresence struct {
+	Id            uuid.UUID
+	ChatId        uuid.UUID
+	ParticipantId uuid.UUID
+
+	Status     ChatPresenceStatus
 	ReceivedAt time.Time
 	CreatedAt  time.Time
 }
