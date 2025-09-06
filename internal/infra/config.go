@@ -24,6 +24,14 @@ func LoadConfig(path string, logger *zap.Logger) (application.Config, error) {
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 	viper.AutomaticEnv()
 
+	// Default Values
+	viper.SetDefault("env", application.EnvironmentDevelopment)
+	viper.SetDefault("database.max_conn", 5)
+	viper.SetDefault("database.min_conn", 2)
+	viper.SetDefault("database.max_conn_idle_time_minutes", 5)
+	viper.SetDefault("database.max_conn_lifetime_minutes", 30)
+	viper.SetDefault("database.health_check_period_minutes", 1)
+
 	if err := viper.ReadInConfig(); err != nil {
 		logger.Info("Application configuration not found", zap.Error(err))
 	}
