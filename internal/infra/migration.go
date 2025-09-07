@@ -23,7 +23,7 @@ import (
 	"github.com/pressly/goose/v3"
 )
 
-//go:embed migrations/*.SQL
+//go:embed migrations/*.sql
 var migrationsFS embed.FS
 
 func MigrateUp(ctx context.Context, pool *pgxpool.Pool) error {

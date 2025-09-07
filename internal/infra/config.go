@@ -26,7 +26,7 @@ func LoadConfig(path string, logger *zap.Logger) (application.Config, error) {
 	var cfg application.Config
 
 	if path == "" {
-		path = "."
+		path = "../.."
 	}
 
 	viper.SetConfigName("omnigo")
