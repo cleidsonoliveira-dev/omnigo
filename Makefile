@@ -37,6 +37,9 @@ test:
 test-integration:
 	go test -v -tags=integration ./...
 
+test-repo-integration:
+	go test -v -tags=repo_integration ./...
+
 # Executar localmente
 run:
 	go run main.go
