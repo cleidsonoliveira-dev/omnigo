@@ -50,3 +50,28 @@ func MigrateUp(ctx context.Context, pool *pgxpool.Pool) error {
 	}
 	return nil
 }
+
+func MigrateDown(ctx context.Context, pool *pgxpool.Pool) error {
+	conn, err := pool.Acquire(ctx)
+	if err != nil {
+		return fmt.Errorf("acquiring pgx connection: %w", err)
+	}
+	// Copy of ConnConfig for Goose
+	connCfg := *conn.Conn().Config()
+	conn.Release()
+
+	sqlDB := stdlib.OpenDB(connCfg)
+	defer sqlDB.Close()
+
+	if err := goose.SetDialect("postgres"); err != nil {
+		return fmt.Errorf("setting goose dialect: %w", err)
+	}
+	goose.SetBaseFS(migrationsFS)
+
+	const migrationsDir = "migrations"
+
+	if err := goose.DownContext(ctx, sqlDB, migrationsDir); err != nil {
+		return fmt.Errorf("running goose down: %w", err)
+	}
+	return nil
+}
