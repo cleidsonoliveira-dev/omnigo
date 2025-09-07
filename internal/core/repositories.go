@@ -20,20 +20,20 @@ import (
 )
 
 type ChannelRepository interface {
-	create(ctx context.Context, channel *Channel) (*Channel, error)
-	save(ctx context.Context, channel *Channel) (*Channel, error)
-	getById(ctx context.Context, id uuid.UUID) (*Channel, error)
+    Create(ctx context.Context, channel *Channel) (*Channel, error)
+    Save(ctx context.Context, channel *Channel) (*Channel, error)
+    GetByID(ctx context.Context, id uuid.UUID) (*Channel, error)
 }
 
 type ChatRepository interface {
-	getById(ctx context.Context, id uuid.UUID) (*Chat, error)
-	create(ctx context.Context, chat *Chat) (*Chat, error)
-	save(ctx context.Context, chat *Chat) (*Chat, error)
+    GetByID(ctx context.Context, id uuid.UUID) (*Chat, error)
+    Create(ctx context.Context, chat *Chat) (*Chat, error)
+    Save(ctx context.Context, chat *Chat) (*Chat, error)
 }
 
 type ParticipantRepository interface {
-	getById(ctx context.Context, id uuid.UUID) (*Participant, error)
-	create(ctx context.Context, participant *Participant) (*Participant, error)
-	save(ctx context.Context, participant *Participant) (*Participant, error)
-	sendPresence(ctx context.Context, participant *Presence) (*Presence, error)
+    GetByID(ctx context.Context, id uuid.UUID) (*Participant, error)
+    Create(ctx context.Context, participant *Participant) (*Participant, error)
+    Save(ctx context.Context, participant *Participant) (*Participant, error)
+    SendPresence(ctx context.Context, participant *Presence) (*Presence, error)
 }
