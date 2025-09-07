@@ -108,17 +108,20 @@ CREATE INDEX IF NOT EXISTS idx_presence_participant_id ON core.presence(particip
 CREATE INDEX IF NOT EXISTS idx_presence_chat_id ON core.presence(chat_id);
 
 -- +goose Down
-DROP TABLE IF EXISTS core.presence;
-DROP TABLE IF EXISTS core.message_attachments;
-DROP TABLE IF EXISTS core.messages;
-DROP TABLE IF EXISTS core.chat_participants;
-DROP TABLE IF EXISTS core.chats;
-DROP TABLE IF EXISTS core.participants;
-DROP TABLE IF EXISTS core.channels;
+-- Drop dependent tables first (order matters)
+DROP TABLE IF EXISTS core.presence CASCADE;
+DROP TABLE IF EXISTS core.message_attachments CASCADE;
+DROP TABLE IF EXISTS core.messages CASCADE;
+DROP TABLE IF EXISTS core.chat_participants CASCADE;
+DROP TABLE IF EXISTS core.chats CASCADE;
+DROP TABLE IF EXISTS core.participants CASCADE;
+DROP TABLE IF EXISTS core.channels CASCADE;
 
+-- Drop enums after tables
 DROP TYPE IF EXISTS core.presence_status;
 DROP TYPE IF EXISTS core.message_direction;
 DROP TYPE IF EXISTS core.chat_status;
 DROP TYPE IF EXISTS core.participant_role;
 
-DROP SCHEMA IF EXISTS core;
+-- Finally drop schema
+DROP SCHEMA IF EXISTS core CASCADE;

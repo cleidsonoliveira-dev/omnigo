@@ -22,14 +22,18 @@ import (
 	"go.uber.org/zap"
 )
 
-func LoadConfig(path string, logger *zap.Logger) (application.Config, error) {
+func LoadConfig(cfgName, path string, logger *zap.Logger) (application.Config, error) {
 	var cfg application.Config
 
 	if path == "" {
 		path = "../.."
 	}
 
-	viper.SetConfigName("omnigo")
+	if cfgName == "" {
+		cfgName = "omnigo"
+	}
+
+	viper.SetConfigName(cfgName)
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(path)
 

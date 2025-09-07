@@ -1,3 +1,5 @@
 bin/
 omnigo.yaml
 omnigo.yml
+omnigo_test.yml
+omnigo_test.yaml

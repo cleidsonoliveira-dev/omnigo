@@ -30,7 +30,7 @@ func TestMain(m *testing.M) {
 	}
 	defer testLogger.Sync()
 
-	testCfg, err = LoadConfig("", testLogger)
+	testCfg, err = LoadConfig("omnigo_test", "", testLogger)
 	if err != nil {
 		testLogger.Fatal("failed to load config", zap.Error(err))
 	}
@@ -39,7 +39,6 @@ func TestMain(m *testing.M) {
 	if err != nil {
 		testLogger.Fatal("failed to init pgx pool", zap.Error(err))
 	}
-	defer testPool.Close()
 
 	// Run migrations once for the whole suite
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
@@ -49,6 +48,17 @@ func TestMain(m *testing.M) {
 	}
 
 	code := m.Run()
+
+	// Teardown: reset DB after all tests
+	ctxDown, cancelDown := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancelDown()
+	if err := MigrateDown(ctxDown, testPool); err != nil {
+		testLogger.Error("failed to run migrations down", zap.Error(err))
+	}
+
+	// Close pool explicitly before exiting
+	testPool.Close()
+
 	os.Exit(code)
 }
 

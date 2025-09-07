@@ -41,6 +41,10 @@ func MigrateUp(ctx context.Context, pool *pgxpool.Pool) error {
 	if err := goose.SetDialect("postgres"); err != nil {
 		return fmt.Errorf("setting goose dialect: %w", err)
 	}
+	// Use a schema-qualified table for goose versions
+	const migrationsTable = "public.schema_migrations"
+	goose.SetTableName(migrationsTable)
+
 	goose.SetBaseFS(migrationsFS)
 
 	const migrationsDir = "migrations"
@@ -66,6 +70,10 @@ func MigrateDown(ctx context.Context, pool *pgxpool.Pool) error {
 	if err := goose.SetDialect("postgres"); err != nil {
 		return fmt.Errorf("setting goose dialect: %w", err)
 	}
+	// Use the same schema-qualified table as in MigrateUp
+	const migrationsTable = "public.schema_migrations"
+	goose.SetTableName(migrationsTable)
+
 	goose.SetBaseFS(migrationsFS)
 
 	const migrationsDir = "migrations"
